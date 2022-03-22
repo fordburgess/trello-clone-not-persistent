@@ -9,55 +9,54 @@ function App() {
   const [name, setName] = useState('')
   const [columnId, setColumnId] = useState(0)
   const [columns, setColumns] = useState([])
-  const createColumn = (id, title) => {
-    const newColumn = {id: id, title: title}
+  const createColumn = (columnId, title) => {
+    const newColumn = {id: columnId, title: title}
     setColumns([...columns, newColumn])
     setColumnId(prevState => prevState + 1)
     console.log(columns)
     setName('')
   }
   const deleteColumn = columnId => {
-    // setColumns(columns.filter(column => column.columnId !== columnId))
-    console.log(columnId)
+    setColumns(columns.filter(column => column.id !== columnId))
   }
 
-  const endpoint = 'https://trello-clone1.hasura.app/v1/graphql'
-  const headers = {
-    'x-hasura-admin-secret': process.env.ADMIN_SECRET,
-    'content-type': 'application/json',
-  }
-  const graphqlQuery = {
-    operationName: 'fetchColumns',
-    query: `query fetchColumns {
-      tasks {
-        status
-      }
-      }`,
-  }
-  const options = {
-    method: 'POST',
-    headers: headers,
-    body: JSON.stringify(graphqlQuery),
-  }
-  useEffect(() => {
-    fetch(endpoint, options)
-      .then(res => res.json())
-      .then(data => {
-        const tasks = data.data.tasks
-        const statuses = []
-        tasks.forEach(task => {
-          if (!statuses.includes(task.status)) {
-            console.log(task)
-            statuses.push(task.status)
-          }
-        })
-        console.log(statuses)
-        statuses.forEach(status => {
-          createColumn(columnId, status)
-          setColumnId(prevState => prevState + 1)
-        })
-      })
-  }, [])
+  // const endpoint = 'https://trello-clone1.hasura.app/v1/graphql'
+  // const headers = {
+  //   'x-hasura-admin-secret': process.env.ADMIN_SECRET,
+  //   'content-type': 'application/json',
+  // }
+  // const graphqlQuery = {
+  //   operationName: 'fetchColumns',
+  //   query: `query fetchColumns {
+  //     tasks {
+  //       status
+  //     }
+  //     }`,
+  // }
+  // const options = {
+  //   method: 'POST',
+  //   headers: headers,
+  //   body: JSON.stringify(graphqlQuery),
+  // }
+  // useEffect(() => {
+  //   fetch(endpoint, options)
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       const tasks = data.data.tasks
+  //       const statuses = []
+  //       tasks.forEach(task => {
+  //         if (!statuses.includes(task.status)) {
+  //           console.log(task)
+  //           statuses.push(task.status)
+  //         }
+  //       })
+  //       console.log(statuses)
+  //       statuses.forEach(status => {
+  //         createColumn(columnId, status)
+  //         setColumnId(prevState => prevState + 1)
+  //       })
+  //     })
+  // }, [])
 
   return (
     <div className="App">
@@ -71,7 +70,7 @@ function App() {
       {/* <HeightContext.Provider value={uniqueHeight}> */}
       <div className="container">
         {columns.map(column => {
-          return <Column key={column.columnId} id={column.columnId} title={column.title} deleteColumn={deleteColumn} />
+          return <Column key={column.id} id={column.id} title={column.title} deleteColumn={deleteColumn} />
         })}
       </div>
       {/* </HeightContext.Provider> */}
