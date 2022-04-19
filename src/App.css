@@ -3,7 +3,7 @@
 .App {
   height: 100vh;
   width: 100vw;
-  background: linear-gradient(to bottom, rgb(82, 6, 6), rgb(194, 11, 11));
+  background: url('../images/ambient3.webp');
   background-position: center;
   background-size: cover;
   font-family: Poppins;
